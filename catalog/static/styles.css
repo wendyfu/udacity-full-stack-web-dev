@@ -1,0 +1,27 @@
+body, .paper a {
+	background: #F5F5F5;
+	color: #343a40!important;
+}
+
+nav {
+	color: #DDDDDD;
+}
+
+nav a:hover {
+	text-decoration: none;
+	color: #DDDDDD;
+}
+
+.paper {
+	padding: 1rem;
+	background: white;
+}
+
+.text-bold {
+	font-weight: 600;
+}
+
+.text-gray {
+	font-weight: normal;
+	font-style: italic;
+}

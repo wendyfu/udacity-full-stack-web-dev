@@ -43,13 +43,18 @@ def showCatalog():
 
 #Show all items available for selected category
 @app.route('/catalog/<string:name>/items')
-def showItems(name):
-    return name
+def showCategoryDetails(name):
+    categories = session.query(Category)
+    category = categories.filter_by(name = name).one()
+    items = session.query(Item).filter_by(category = category).all()
+    size = len(items)
+    return render_template('category.html', name = name, categories = categories, items = items, size = size)
 
 #Show specific information about selected item
 @app.route('/catalog/<string:name>/<string:title>')
 def showItemDetails(name, title):
-    return name + " - " + title
+    item = session.query(Item).filter_by(title = title).one()
+    return render_template('item.html', item = item)
 
 if __name__ == '__main__':
   app.secret_key = 'super_secret_key'

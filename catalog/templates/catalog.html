@@ -1,15 +1,21 @@
+{% extends "base.html" %}
 {% block content %}
-	<h2>Categories</h2>
-	{% for category in categories %}
-		<a href = "{{url_for('showItems', name = category.name)}}">
-			<h3>{{category.name}}</h3>
-		</a>
-	{% endfor %}
-
-	<h2>Latest Items</h2>
-	{% for item in items %}
-		<a href = "{{url_for('showItemDetails', name = item.category.name, title=item.title)}}">
-			<h3>{{item.title}} ({{item.category.name}})</h3>
-		</a>
-	{% endfor %}
+	<div class="row">
+		<div class="col-md-4">
+			<h3>Categories</h3>
+			{% for category in categories %}
+				<a href = "{{url_for('showCategoryDetails', name = category.name)}}">
+					<div class="text-bold">{{category.name}}</div>
+				</a>
+			{% endfor %}
+	    </div>
+	    <div class="col-md-8">
+	    	<h3>Latest Items</h3>
+			{% for item in items %}
+				<a href = "{{url_for('showItemDetails', name = item.category.name, title=item.title)}}">
+					<div class="text-bold">{{item.title}} <span class="text-gray">({{item.category.name}})</span></div>
+				</a>
+			{% endfor %}
+	    </div>
+	</div>
 {% endblock %}
