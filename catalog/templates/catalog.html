@@ -1,11 +1,15 @@
 {% block content %}
 	<h2>Categories</h2>
 	{% for category in categories %}
-		<h3>{{category.name}}</h3>
+		<a href = "{{url_for('showItems', name = category.name)}}">
+			<h3>{{category.name}}</h3>
+		</a>
 	{% endfor %}
 
 	<h2>Latest Items</h2>
 	{% for item in items %}
-		<h3>{{item.title}} ({{item.category.name}})</h3>
+		<a href = "{{url_for('showItemDetails', name = item.category.name, title=item.title)}}">
+			<h3>{{item.title}} ({{item.category.name}})</h3>
+		</a>
 	{% endfor %}
 {% endblock %}

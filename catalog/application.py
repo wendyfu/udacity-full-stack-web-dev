@@ -41,6 +41,16 @@ def showCatalog():
     items = session.query(Item).order_by(desc(Item.id)).limit(10)
     return render_template('catalog.html', categories = categories, items = items)
 
+#Show all items available for selected category
+@app.route('/catalog/<string:name>/items')
+def showItems(name):
+    return name
+
+#Show specific information about selected item
+@app.route('/catalog/<string:name>/<string:title>')
+def showItemDetails(name, title):
+    return name + " - " + title
+
 if __name__ == '__main__':
   app.secret_key = 'super_secret_key'
   app.debug = True
