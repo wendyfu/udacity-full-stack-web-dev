@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item, User
 
@@ -32,6 +32,14 @@ def catalogJSON():
         categories.append(category)
 
     return jsonify(Category = categories)
+
+#The homepage displays all current categories with 10 latest added items
+@app.route('/')
+@app.route('/catalog/')
+def showCatalog():
+    categories = session.query(Category)
+    items = session.query(Item).order_by(desc(Item.id)).limit(10)
+    return render_template('catalog.html', categories = categories, items = items)
 
 if __name__ == '__main__':
   app.secret_key = 'super_secret_key'
