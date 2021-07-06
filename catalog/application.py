@@ -227,6 +227,7 @@ def editItem(title):
     if 'username' not in login_session:
         flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
+
     if item.user_id != login_session['email']:
         flash(Markup('<div class="flash text-danger">You have no authorization to edit this item!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
@@ -242,21 +243,26 @@ def editItem(title):
 #Delete an item
 @app.route('/catalog/<string:title>/delete/', methods = ['GET', 'POST'])
 def deleteItem(title):
-    item = session.query(Item).filter_by(title = title).one()
+    item = session.query(Item).filter_by(title = title).first()
+
+    if item is None:
+        flash(Markup('<div class="flash text-danger">Requested item %s does not exist</div>' % title))
+        return redirect(url_for('showCatalog'))
 
     if 'username' not in login_session:
         flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
-    if item.user_id != login_session['user_id']:
+    
+    if item.user_id != login_session['email']:
         flash(Markup('<div class="flash text-danger">You have no authorization to delete this item!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
-  # editedRestaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
-  # if request.method == 'POST':
-  #     if request.form['name']:
-  #       editedRestaurant.name = request.form['name']
-  #       flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
-  #       return redirect(url_for('showRestaurants'))
-  # else:
+
+    if request.method == 'POST':
+        session.delete(item)
+        flash(Markup('<div class="flash text-success">Succesfully deleted %s</div>' % title))
+        session.commit()
+        return redirect(url_for('showCatalog'))
+
     return render_template('deleteItem.html', item = item)
 
 if __name__ == '__main__':

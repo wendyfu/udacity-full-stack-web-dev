@@ -16,6 +16,16 @@
 					<div class="text-bold">{{item.title}} <span class="text-gray">({{item.category.name}})</span></div>
 				</a>
 			{% endfor %}
+
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}		
+			<ul>
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			{% endwith %}
 	    </div>
 	    <div class="col-md-2 text-right">
 			<a class="btn btn-outline-dark btn-sm" href="{{url_for('newItem')}}" role="button">Add New Item</a>
