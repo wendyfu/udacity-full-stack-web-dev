@@ -4,20 +4,21 @@
 	<div class="col">
 		<h3>{{item.title}}</h3>
 		<div class="text-gray">{{item.description}}</div>
-		<a class="btn btn-outline-dark btn-sm" href="{{url_for('editItem', title = item.title)}}" role="button">Edit</a>
-		<a class="btn btn-outline-dark btn-sm" href="{{url_for('deleteItem', title = item.title)}}" role="button">Delete</a>
-		<div class="flash text-danger">
-			{% with messages = get_flashed_messages() %}
-			{% if messages %}
-			
-			<ul>
-				{% for message in messages %}
-				<li>{{ message }}</li>
-				{% endfor %}
-			</ul>
-			{% endif %}
-			{% endwith %}
-		</div>
+		
+		{% if g.user and g.user.id == item.user.id %}
+			<a class="btn btn-outline-dark btn-sm" href="{{url_for('editItem', title = item.title)}}" role="button">Edit</a>
+			<a class="btn btn-outline-dark btn-sm" href="{{url_for('deleteItem', title = item.title)}}" role="button">Delete</a>
+		{% endif %}
+		
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}		
+		<ul>
+			{% for message in messages %}
+			<li>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
 	</div>
 </div>
 {% endblock %}

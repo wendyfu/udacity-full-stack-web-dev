@@ -29,10 +29,10 @@ nav a:hover {
 	font-style: italic;
 }
 
-.flash ul {
+ul {
 	padding: 0;
 }
 
-.flash li {
+li {
 	list-style-type: none;
 }

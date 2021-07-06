@@ -1,4 +1,4 @@
-from flask import flash, Flask, g, jsonify, make_response, redirect, render_template, request, session as login_session, url_for
+from flask import flash, Flask, g, jsonify, make_response, Markup, redirect, render_template, request, session as login_session, url_for
 
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
@@ -196,6 +196,26 @@ def showItemDetails(name, title):
 #Add an item
 @app.route('/catalog/new', methods = ['GET', 'POST'])
 def newItem():
+    if 'username' not in login_session:
+        flash('You are not logged in!')
+        return render_template('newItem.html')
+
+    if request.method == 'POST':
+        category = session.query(Category).filter_by(id = request.form['category']).one()
+
+        #Check if item already exist
+        existingItem = session.query(Item).filter_by(title = request.form['title']).first()
+        if existingItem is not None:
+            flash(Markup('<div class="flash text-danger">Item %s already exist</div>' % existingItem.title))
+            return redirect(url_for('showItemDetails', name = category.name, title = existingItem.title))
+
+        newItem = Item(user_id = login_session['email'], title = request.form['title'],
+                         description = request.form['description'], category = category)
+        session.add(newItem)
+        flash(Markup('<div class="flash text-success">New item %s successfully created</div>' % newItem.title))
+        session.commit()
+        return redirect(url_for('showItemDetails', name = category.name, title = newItem.title))
+
     categories = session.query(Category)
     return render_template('newItem.html', categories = categories)
 
@@ -205,10 +225,10 @@ def editItem(title):
     item = session.query(Item).filter_by(title = title).one()
 
     if 'username' not in login_session:
-        flash('You are not logged in!')
+        flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
-    if item.user_id != login_session['user_id']:
-        flash('You have no authorization to edit this item!')
+    if item.user_id != login_session['email']:
+        flash(Markup('<div class="flash text-danger">You have no authorization to edit this item!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
   # editedRestaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
   # if request.method == 'POST':
@@ -225,10 +245,10 @@ def deleteItem(title):
     item = session.query(Item).filter_by(title = title).one()
 
     if 'username' not in login_session:
-        flash('You are not logged in!')
+        flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
     if item.user_id != login_session['user_id']:
-        flash('You have no authorization to delete this item!')
+        flash(Markup('<div class="flash text-danger">You have no authorization to delete this item!</div>'))
         return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
   # editedRestaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
   # if request.method == 'POST':
