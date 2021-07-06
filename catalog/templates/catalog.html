@@ -28,7 +28,9 @@
 			{% endwith %}
 	    </div>
 	    <div class="col-md-2 text-right">
-			<a class="btn btn-outline-dark btn-sm" href="{{url_for('newItem')}}" role="button">Add New Item</a>
+	    	{% if g.user %}		
+				<a class="btn btn-outline-dark btn-sm" href="{{url_for('newItem')}}" role="button">Add New Item</a>
+			{% endif %}
 	    </div>
 	</div>
 {% endblock %}

@@ -23,7 +23,7 @@ class Category(Base):
     user = relationship(User)
 
     __table_args__ = (UniqueConstraint('name'),)
-                     
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -43,7 +43,7 @@ class Item(Base):
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    
+
     __table_args__ = (UniqueConstraint('title'),)
 
     @property
