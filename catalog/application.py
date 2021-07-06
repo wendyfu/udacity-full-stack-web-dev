@@ -1,4 +1,4 @@
-from flask import flash, Flask, g, jsonify, make_response, redirect, render_template, request, session as login_session
+from flask import flash, Flask, g, jsonify, make_response, redirect, render_template, request, session as login_session, url_for
 
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
@@ -118,15 +118,9 @@ def gconnect():
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
-    print ("done!")
-    return output
+    response = make_response(json.dumps('Successfully logged in'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 # Handle logout
 @app.route('/gdisconnect')
@@ -189,7 +183,7 @@ def showCatalog():
 def showCategoryDetails(name):
     categories = session.query(Category)
     category = categories.filter_by(name = name).one()
-    items = session.query(Item).filter_by(category = category).all()
+    items = session.query(Item).filter_by(category_id = category.id).all()
     size = len(items)
     return render_template('category.html', name = name, categories = categories, items = items, size = size)
 
@@ -198,6 +192,52 @@ def showCategoryDetails(name):
 def showItemDetails(name, title):
     item = session.query(Item).filter_by(title = title).one()
     return render_template('item.html', item = item)
+
+#Add an item
+@app.route('/catalog/new', methods = ['GET', 'POST'])
+def newItem():
+    categories = session.query(Category)
+    return render_template('newItem.html', categories = categories)
+
+#Edit an item
+@app.route('/catalog/<string:title>/edit/', methods = ['GET', 'POST'])
+def editItem(title):
+    item = session.query(Item).filter_by(title = title).one()
+
+    if 'username' not in login_session:
+        flash('You are not logged in!')
+        return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
+    if item.user_id != login_session['user_id']:
+        flash('You have no authorization to edit this item!')
+        return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
+  # editedRestaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+  # if request.method == 'POST':
+  #     if request.form['name']:
+  #       editedRestaurant.name = request.form['name']
+  #       flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
+  #       return redirect(url_for('showRestaurants'))
+  # else:
+    return render_template('editItem.html', item = item)
+
+#Delete an item
+@app.route('/catalog/<string:title>/delete/', methods = ['GET', 'POST'])
+def deleteItem(title):
+    item = session.query(Item).filter_by(title = title).one()
+
+    if 'username' not in login_session:
+        flash('You are not logged in!')
+        return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
+    if item.user_id != login_session['user_id']:
+        flash('You have no authorization to delete this item!')
+        return redirect(url_for('showItemDetails', name = item.category.name, title = item.title))
+  # editedRestaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+  # if request.method == 'POST':
+  #     if request.form['name']:
+  #       editedRestaurant.name = request.form['name']
+  #       flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
+  #       return redirect(url_for('showRestaurants'))
+  # else:
+    return render_template('deleteItem.html', item = item)
 
 if __name__ == '__main__':
   app.secret_key = 'super_secret_key'

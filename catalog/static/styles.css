@@ -1,6 +1,5 @@
 body, .paper a {
 	background: #F5F5F5;
-	color: #343a40!important;
 }
 
 nav {
@@ -17,6 +16,10 @@ nav a:hover {
 	background: white;
 }
 
+.text-bold, .text-gray {
+	color: #343a40!important;
+}
+
 .text-bold {
 	font-weight: 600;
 }
@@ -24,4 +27,12 @@ nav a:hover {
 .text-gray {
 	font-weight: normal;
 	font-style: italic;
+}
+
+.flash ul {
+	padding: 0;
+}
+
+.flash li {
+	list-style-type: none;
 }
