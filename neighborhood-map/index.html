@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neighborhood Map</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="js/maps.js"></script>
+</head>
+<body>
+    <nav id="drawer" class="nav bg-light">
+    </nav>
+    <main>
+        <header class="bg-dark">
+            <a id="header__menu" class="header__menu">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+              </svg>
+            </a>
+        </header>
+        <div id="map">map</div>
+    </main>
+    <script src="js/ui.js"></script>
+    <script src="js/lib/knockout-3.5.1.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmNQG2rxH7sznzmOhrzy17suiShPOlCk&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+</body>
+</html>

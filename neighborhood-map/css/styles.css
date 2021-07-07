@@ -1,0 +1,46 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+html, body, main {
+	height: 100%;
+	width: 100%;
+}
+
+nav {
+	width: 300px;
+	height: 100%;
+	position: absolute;
+	transform: translate(-300px, 0);
+	transition: transform 0.2s ease-in-out;
+}
+
+nav.open {
+	transform: translate(0, 0);
+}
+
+header {
+	padding: 10px;
+}
+
+.header__menu svg {
+	width: 32px;
+	fill: #f8f9fa;
+}
+
+.header__menu svg:hover {
+	cursor: pointer;
+}
+
+main {
+	transition: transform 0.2s ease-in-out;
+}
+
+main.open {
+	transform: translate(300px, 0);
+}
+
+#map {
+	height: calc(100% - 52px);
+}
