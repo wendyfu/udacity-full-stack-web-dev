@@ -8,9 +8,13 @@
     <script src="js/maps.js"></script>
 </head>
 <body>
-    <nav id="drawer" class="nav bg-light">
+    <nav id="drawer" class="nav open bg-dark">
+        <input data-bind="textInput: query" type="text" class="form-control" placeholder="Type to filter.." />
+        <div class="list" data-bind="foreach: locationList">
+            <div class="list__item" data-bind="text: name, click: $parent.onLocationClick"></div>
+        </div>
     </nav>
-    <main>
+    <main class="open">
         <header class="bg-dark">
             <a id="header__menu" class="header__menu">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -20,10 +24,11 @@
         </header>
         <div id="map">map</div>
     </main>
-    <script src="js/ui.js"></script>
     <script src="js/lib/knockout-3.5.1.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ui.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmNQG2rxH7sznzmOhrzy17suiShPOlCk&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap&libraries=&v=weekly"
       async
     ></script>
 </body>

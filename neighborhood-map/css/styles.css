@@ -14,10 +14,35 @@ nav {
 	position: absolute;
 	transform: translate(-300px, 0);
 	transition: transform 0.2s ease-in-out;
+	flex-direction: column;
 }
 
 nav.open {
 	transform: translate(0, 0);
+}
+
+.nav {
+	padding: 1rem!important;
+}
+
+.list {
+	margin-top: 0.5rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.list__item {
+	padding: 0.8rem;
+	color: #f8f9fa;
+	font-size: 1.2rem;
+}
+
+.list__item:hover {
+	cursor: pointer;
+}
+
+.list__item:active {
+	transform: translate(1px, 1px);
 }
 
 header {
