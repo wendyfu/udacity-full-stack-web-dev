@@ -13,4 +13,6 @@ Simply open the `index.html` from the browser.
 - New York Times API (https://developer.nytimes.com/)
 
 ### Attribution
-- How to initialize map, add Marker, and show InfoWindow from Google Maps API documentation
+- How to [initialize map](https://developers.google.com/maps/documentation/javascript/examples/map-simple), add [Marker](https://developers.google.com/maps/documentation/javascript/markers), and show [InfoWindow](https://developers.google.com/maps/documentation/javascript/infowindows) from Google Maps API documentation
+- NY Times API implementation from Udacity [Intro to AJAX Course](https://classroom.udacity.com/courses/ud110/lessons/3310298553/concepts/31806586030923)
+- KnockoutJS [textInput binding](https://knockoutjs.com/documentation/textinput-binding.html)
