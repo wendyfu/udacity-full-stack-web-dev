@@ -7,8 +7,3 @@ menu.addEventListener('click', function(e) {
   main.classList.toggle('open')
   e.stopPropagation();
 });
-
-main.addEventListener('click', function() {
-  drawer.classList.remove('open');
-  main.classList.remove('open')
-});

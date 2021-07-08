@@ -37,7 +37,7 @@ var ViewModel = function() {
 
 	this.onLocationClick = function(location) {
 		self.clickedLocation(location);
-		alert(location.name())
+		onListItemClick(location)
 	};
 }
 
