@@ -100,6 +100,3 @@ Part of [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/co
   ]
 }
 ```
-
-### Check Codestyle
-Run `pycodestyle <filename>.py`
