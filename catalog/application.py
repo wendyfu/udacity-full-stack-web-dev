@@ -1,4 +1,8 @@
-from flask import flash, Flask, g, jsonify, make_response, Markup, redirect, render_template, request, session as login_session, url_for
+from flask import (
+    flash, Flask, g, jsonify, make_response,
+    Markup, redirect, render_template, request,
+    session as login_session, url_for
+)
 
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
@@ -144,7 +148,8 @@ def gdisconnect():
     print('In gdisconnect access token is %s', access_token)
     print('User name is: ')
     print(login_session['username'])
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' \
+        % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print('result is ')
@@ -184,6 +189,14 @@ def catalogJSON():
         categories.append(category)
 
     return jsonify(Category=categories)
+
+# JSON API to retriever certain catalog items
+
+
+@app.route('/catalog/<string:name>/<string:title>.json')
+def catalogItemJSON(name, title):
+    item = session.query(Item).filter_by(title=title).one()
+    return jsonify(Item=item.serialize)
 
 # The homepage displays all current categories with 10 latest added items
 
@@ -238,8 +251,9 @@ def newItem():
         if existingItem is not None:
             flash(
                 Markup(
-                    '<div class="flash text-danger">Item %s already exist</div>' %
-                    existingItem.title))
+                    '<div class="flash text-danger">Item \
+                        %s already exist</div>'
+                    % existingItem.title))
             return redirect(
                 url_for(
                     'showItemDetails',
@@ -254,8 +268,9 @@ def newItem():
         session.add(newItem)
         flash(
             Markup(
-                '<div class="flash text-success">New item %s successfully created</div>' %
-                newItem.title))
+                '<div class="flash text-success">New item \
+                    %s successfully created</div>'
+                % newItem.title))
         session.commit()
         return redirect(
             url_for(
@@ -276,12 +291,14 @@ def editItem(title):
     if item is None:
         flash(
             Markup(
-                '<div class="flash text-danger">Requested item %s does not exist</div>' %
+                '<div class="flash text-danger">Requested \
+                    item %s does not exist</div>' %
                 title))
         return redirect(url_for('showCatalog'))
 
     if 'username' not in login_session:
-        flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
+        flash(Markup('<div class="flash text-danger">\
+            You are not logged in!</div>'))
         return redirect(
             url_for(
                 'showItemDetails',
@@ -290,7 +307,8 @@ def editItem(title):
 
     if item.user_id != login_session['email']:
         flash(Markup(
-            '<div class="flash text-danger">You have no authorization to edit this item!</div>'))
+            '<div class="flash text-danger">You \
+            have no authorization to edit this item!</div>'))
         return redirect(
             url_for(
                 'showItemDetails',
@@ -310,7 +328,8 @@ def editItem(title):
         session.add(item)
         flash(
             Markup(
-                '<div class="flash text-success">Item %s successfully edited</div>' %
+                '<div class="flash text-success">Item \
+                    %s successfully edited</div>' %
                 item.title))
         session.commit()
         return redirect(
@@ -332,12 +351,14 @@ def deleteItem(title):
     if item is None:
         flash(
             Markup(
-                '<div class="flash text-danger">Requested item %s does not exist</div>' %
+                '<div class="flash text-danger">\
+                Requested item %s does not exist</div>' %
                 title))
         return redirect(url_for('showCatalog'))
 
     if 'username' not in login_session:
-        flash(Markup('<div class="flash text-danger">You are not logged in!</div>'))
+        flash(Markup('<div class="flash text-danger">\
+            You are not logged in!</div>'))
         return redirect(
             url_for(
                 'showItemDetails',
@@ -346,7 +367,8 @@ def deleteItem(title):
 
     if item.user_id != login_session['email']:
         flash(Markup(
-            '<div class="flash text-danger">You have no authorization to delete this item!</div>'))
+            '<div class="flash text-danger">\
+            You have no authorization to delete this item!</div>'))
         return redirect(
             url_for(
                 'showItemDetails',
@@ -357,7 +379,8 @@ def deleteItem(title):
         session.delete(item)
         flash(
             Markup(
-                '<div class="flash text-success">Succesfully deleted %s</div>' %
+                '<div class="flash text-success">\
+                Succesfully deleted %s</div>' %
                 title))
         session.commit()
         return redirect(url_for('showCatalog'))
